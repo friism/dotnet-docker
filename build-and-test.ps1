@@ -44,7 +44,8 @@ Get-ChildItem -Recurse -Filter Dockerfile |
             $tagSuffix
         $tags.Add($tag) | Out-Null
         Write-Host "--- Building $tag from $($_.DirectoryName) ---"
-        docker build $optionalDockerBuildArgs -t $tag $_.DirectoryName
+        $dockerfilePath = $_.DirectoryName + '\Dockerfile'
+        Get-Content $dockerfilePath | docker build $optionalDockerBuildArgs -t $tag -
         if (-NOT $?) {
             throw "Failed building $tag"
         }
